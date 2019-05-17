@@ -4,10 +4,10 @@ inhibit_all_warnings!
 use_frameworks!
 install! 'cocoapods', :deterministic_uuids => false
 
-workspace 'PhrVer.xcworkspace'
+workspace 'DemoTravis.xcworkspace'
 
-target 'PhrVer' do
-    project 'PhrVer'
+target 'DemoTravis' do
+    project 'DemoTravis'
     pod 'MVVM-Swift' # MVVM Architect for iOS Application.
     pod 'IQKeyboardManagerSwift','6.2.1'
     # Data
@@ -30,10 +30,6 @@ target 'PhrVer' do
 #    pod 'SpreadButton'
 #    pod 'WCLShineButton'
     pod 'CircleMenu'
-
-    target 'PhrVerTests' do
-        inherit! :complete
-    end
 
     post_install do |installer|
         installer.pods_project.targets.each do |target|
