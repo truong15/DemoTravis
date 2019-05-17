@@ -1,11 +1,14 @@
 language: swift
-osx_image: xcode10.2
-
-
-language: objective-c
-xcode_project: TravisDemo.xcodeproj # path to your xcodeproj folder
-xcode_scheme: TravisDemo
-xcode_destination: platform=iOS Simulator,OS=10.1,name=iPad Pro (9.7-inch)
-
-after_success:
-  - echo 'Success!'
+osx_image: xcode10.1
+cache:
+  - bundler
+  - cocoapods
+install:
+  - set -o pipefail
+  - sudo systemsetup -settimezone Asia/Ho_Chi_Minh
+  - bundle install --path=vendor/bundle --jobs 4 --retry 3
+script:
+  - ./scripts/branch
+  - bundle exec pod install --repo-update
+  - ./scripts/lint 
+ 

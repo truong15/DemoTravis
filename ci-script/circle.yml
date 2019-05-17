@@ -1,0 +1,41 @@
+general:       
+  branches:       
+    ignore:       
+      - /bugfix\/.*/ # or ignore regexes
+      - /feature\/.*/ # or ignore regexes
+machine:
+  xcode:
+    version: '7.3.1'
+  environment:
+    WORKSPACE: 'CM.xcworkspace'
+    SDK: 'iphonesimulator'
+    DESTINATION: 'platform=iOS Simulator,OS=9.0,name=iPhone 6'
+    SCHEME: 'RENA-AdHoc'
+dependencies:
+  cache_directories:
+    - ~/.rbenv
+    - ~/.cocoapods
+    - ./.bundle
+    - ./vendor
+  pre:
+    - set -o pipefail
+    - sudo xcode-select -switch /Applications/Xcode-8.0.app
+    - brew update
+    - ./scripts/setup_rbenv
+  override:
+    - ./scripts/setup
+test:
+  override:
+    - rm -rf ci-env
+    - sudo xcode-select -switch /Applications/Xcode-7.3.app
+    - echo "export REPO_SLUG=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" >> ci-env
+    - echo "export PR_NUMBER=$(./scripts/pr_number)" >> ci-env
+    - echo "export SRC_BRANCH=$(./scripts/src_branch)" >> ci-env
+    # workaround https://github.com/realm/SwiftLint/issues/13
+    - ln -s /Applications/Xcode-7.3.1.app /Applications/Xcode.app
+    # https://discuss.circleci.com/t/xcode-exit-code-65/4284/14
+    - xcrun instruments -w 'iPhone 6 (9.0) (Simulator)' || true
+    - sleep 15
+    - source ci-env && ./scripts/validate_branch
+    - source ci-env && ./scripts/lint
+    - source ci-env && ./scripts/test

@@ -1,0 +1,31 @@
+language: swift
+osx_image: xcode10
+cache:
+  bundler: true
+  cocoapods: true
+  directories:
+    - ~/.rvm
+    - ~/.cocoapods
+    - ~/Library/Caches/Cocoapods
+    - ./.bundle
+    - ./.vendor
+    - vendor/bundle
+env:
+  global:
+    - SDK='iphonesimulator12.0'
+    - WORKSPACE='CM.xcworkspace'
+    - DESTINATION='OS=12.0,name=iPhone 8'
+install:
+    - set -o pipefail
+    - ./scripts/install
+script:
+    - export REPO_SLUG="$TRAVIS_REPO_SLUG"
+    - export SRC_BRANCH="$(./scripts/ci/src_branch)"
+    - export PR_NUMBER="$(./scripts/ci/pr_number)"
+    - ./scripts/tests/lint
+    - ./scripts/tests/app
+notifications:
+  email: false
+after_success:
+  - echo 'Success!'
+
