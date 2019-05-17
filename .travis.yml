@@ -1,14 +1,11 @@
 language: swift
-osx_image: xcode10
+osx_image: xcode10.2
 
-install:
-    - set -o pipefail
-script:
-  
-after_success:
-  - echo 'Success!'
 
 language: objective-c
 xcode_project: TravisDemo.xcodeproj # path to your xcodeproj folder
 xcode_scheme: TravisDemo
 xcode_destination: platform=iOS Simulator,OS=10.1,name=iPad Pro (9.7-inch)
+
+after_success:
+  - echo 'Success!'
