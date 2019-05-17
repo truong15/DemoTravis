@@ -3,7 +3,7 @@
 if [[ "$CI" != 'true' ]]; then
     echo 'Exporting build environment variables...'
     export SDK='iphonesimulator12.0'
-    export WORKSPACE='CM.xcworkspace'
+    export WORKSPACE='TravisDemo.xcworkspace'
     export DESTINATION='platform=iOS Simulator,OS=12.0,name=iPhone 8'
     export CONFIGURATION='Debug'
 fi
@@ -11,7 +11,7 @@ fi
 rm -rf './build'
 
 # SPCLUB-AdHoc RENA-AdHoc KENSAPO-AdHoc
-for scheme in CM-AdHoc RENA-AdHoc SPCLUB-AdHoc TOHO-AdHoc; do
+for scheme in TravisDemo; do
     echo "Compiling....." $scheme
     xcodebuild build \
         -workspace "$WORKSPACE" \

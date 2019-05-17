@@ -4,10 +4,10 @@ inhibit_all_warnings!
 use_frameworks!
 install! 'cocoapods', :deterministic_uuids => false
 
-workspace 'DemoTravis.xcworkspace'
+workspace 'TravisDemo.xcworkspace'
 
-target 'DemoTravis' do
-    project 'DemoTravis'
+target 'TravisDemo' do
+    project 'TravisDemo'
     pod 'MVVM-Swift' # MVVM Architect for iOS Application.
     pod 'IQKeyboardManagerSwift','6.2.1'
     # Data
