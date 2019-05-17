@@ -1,4 +1,10 @@
 language: swift
 osx_image: xcode10
 
+install:
+    - set -o pipefail
+script:
+  
+after_success:
+  - echo 'Success!'
 
