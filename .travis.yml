@@ -7,8 +7,11 @@ install:
   - set -o pipefail
   - sudo systemsetup -settimezone Asia/Ho_Chi_Minh
   - bundle install --path=vendor/bundle --jobs 4 --retry 3
+before_script:
+  - ./scripts/add-key
 script:
   - ./scripts/branch
   - bundle exec pod install --repo-update
   - ./scripts/lint 
+  - bundle exec fastlane dev
  
