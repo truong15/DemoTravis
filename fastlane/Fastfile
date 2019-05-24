@@ -1,0 +1,59 @@
+default_platform :ios
+
+# You need to set your project values.
+SCHEME_DEBUG = 'TravisDemo'
+SCHEME_STAGING = ''
+SCHEME_RELEASE = ''
+DEPLOYGATE_USER_NAME = ''
+WORKSPACE_NAME = 'TravisDemo'
+
+platform :ios do
+
+  desc "Build App in local"
+  lane :dev do
+    config_cer_provision(
+      certificate_path: "./scripts/certs/dev.p12",
+      profile: "./scripts/certs/cm_dev.mobileprovision",
+      build_configuration: "Debug"
+    )
+    build_ios_app(
+      scheme: SCHEME_DEBUG,
+      workspace: WORKSPACE_NAME,
+      configuration: "Debug", 
+      export_method: "development",
+      clean: true,
+      silent: true
+   )
+
+    if is_ci?
+      appversion = get_info_plist_value(path: "./Tatekan/Supports/Info.plist", key: "CFBundleShortVersionString")
+      appBuildNumber = get_info_plist_value(path: "./Tatekan/Supports/Info.plist", key: "CFBundleVersion")
+      message = "Tatekan app Version: #{appversion}, Build: #{appBuildNumber}"
+      deploygate(
+        api_token: ENV['API_TOKEN'],
+        user: DEPLOYGATE_USER_NAME,
+        ipa: "/Users/travis/build/AsianTechInc/Tatekan-iOS/Tatekan.ipa",
+        message: message
+      )
+    end
+    
+  end
+
+  desc "Import certificate"
+    private_lane :config_cer_provision do |options|
+    import_certificate(
+      keychain_name: "ios-build.keychain",
+      keychain_password: "travis",
+      certificate_path: "#{options[:certificate_path]}",
+      certificate_password: ENV["CERTIFICATE_PASSWORD"]
+    )
+    
+    update_project_provisioning(
+      xcodeproj: "TravisDemo.xcodeproj",
+      profile: "#{options[:profile]}",
+      target_filter: "TravisDemo",
+      build_configuration: "#{options[:build_configuration]}"
+    )
+  end
+
+end

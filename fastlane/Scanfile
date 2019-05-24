@@ -1,0 +1,3 @@
+scheme "TravisDemo"
+devices ["iPhone 8"]
+clean true

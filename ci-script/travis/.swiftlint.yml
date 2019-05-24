@@ -1,0 +1,156 @@
+reporter: xcode
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  # - private_outlet
+  - vertical_whitespace
+disabled_rules:
+  - todo
+  - type_name
+  - shorthand_operator
+  - unused_closure_parameter
+  - cyclomatic_complexity
+  - file_length
+  - redundant_optional_initialization
+excluded:
+  - Carthage
+  - Pods
+  - vendor
+private_outlet:
+  allow_private_set: true
+line_length: 200
+file_length: 1800
+force_unwrapping: error
+function_parameter_count:
+  - 6
+  - 8
+function_body_length:
+  - 500
+type_body_length:
+  - 1000
+nesting:
+    type_level: 2
+variable_name:
+  min_length:
+    warning: 1
+  max_length:
+    warning: 40
+    error: 60
+custom_rules:
+  disable:
+    name: "Disable Rule In Code"
+    regex: "(swiftlint:disable)"
+    message: "Please do not disable rule in code. "
+    severity: error
+    match_kinds: comment
+  realm_write:
+    name: "Realm write"
+    regex: "(\\w+.write \\{)"
+    message: "Please use `writeSafe` instead of `write` for safer"
+    severity: error
+  realm_delete:
+    name: "Realm delete"
+    regex: "(Realm\\(\\)\\.delete)|(RealmS\\(\\)\\.delete)"
+    message: "Please use realm delete in write block"
+    severity: error
+  private_outlet:
+    name: "outlet"
+    regex: "(@IBOutlet var|@IBOutlet weak var|@IBOutlet weak private var|@IBOutlet weak private(set) var)"
+    message: "Please use `@IBOutlet private weak var` or `@IBOutlet private(set) weak var` instead of. "
+    severity: warning
+  collection_outlet:
+    name: "weak outlet"
+    regex: "(@IBOutlet private var \\w+: )([^\\[])"
+    message: "Use private `weak` for IBOutlet"
+    severity: warning
+  delegate:
+    name: "delegate"
+    regex: "(  var delegate)"
+    message: "Please use `weak` for `delegate`. "
+    severity: error
+  comments_space:
+    name: "Space After Comment"
+    regex: "(^ *//\\w+)"
+    message: "There should be a space after //"
+    severity: warning
+    match_kinds: comment
+  multiple_empty_lines:
+    name: "Multiple Empty Lines"
+    regex: "((?: *\n){3,})"
+    message: "There are too many line breaks"
+    severity: warning
+  empty_line:
+    name: "Empty Line"
+    regex: "(\\}\n +( |class|static|dynamic|@objc|@IBAction|override|private|public|internal){0,}func)"
+    message: "Must have an empty line between functions. "
+    severity: warning
+  extension_mark:
+    name: "Extension Mark"
+    regex: "(\\}\n\nextension)"
+    message: "Must have `// MARK:` before extension. "
+    severity: warning
+  switch_enum:
+    name: "Switch Enum"
+    regex: "(case \\w+\\.+rawValue:)"
+    message: "Don't use enum.rawValue in switch-case. Please convert value to enum first. "
+    severity: error
+  compile_lookup:
+    name: "Compile Lookup"
+    regex: "((var|let) \\w+ = \\[)"
+    message: "You need to give types to the array and dictionary. "
+    severity: error
+  weak_self_usage:
+    name: "Weak Self Usage"
+    regex: "(self\\?\\.)"
+    message: "Explicitly extending lifetime is preferred to optional binding. Ex: `guard let this = self else { return }`. "
+    severity: error
+  weak_self_binding:
+    name: "Weak Self Binding"
+    regex: "(let (?!this)\\w+ = self[, ])"
+    message: "Please use `let this = self` instead. "
+    severity: error
+  unowned:
+    name: "Unowned"
+    regex: "(unowned)"
+    message: "Please use `weak` instead. "
+    severity: error
+  vc_suffix:
+    name: "VC Suffix"
+    regex: "(VC )"
+    message: "Please simplify with `vc`. "
+    severity: error
+  empty_string:
+    name: "Empty String"
+    regex: "((!\\w+.isNotEmpty)|(length == 0)|(== \"\"))"
+    message: "Please use `isEmpty` instead. "
+    severity: error
+  not_empty_string:
+    name: "Not Empty String"
+    regex: "((!\\w+.isEmpty)|(length (!=|>) 0)|(!= \"\"))"
+    message: "Please use `isNotEmpty` instead. "
+    severity: error
+  type_first_empty_line:
+    name: "Class Declaration"
+    regex: "(class[^\n]+\\{\n\\s{4}\\S)"
+    message: "Please insert empty after type declaration. "
+    severity: warning
+  bracket:
+    name: "Bracket"
+    regex: "(\\}\n{2,}\\}|\\{\n{2,}\\{)"
+    message: "No empty line between two open or close brackets. "
+    severity: warning
+  query_string:
+    name: "Query String"
+    regex: "( [=!><]+ \\\\(.*\\))"
+    message: "Donot use the string interpolation syntax for query string. "
+    severity: warning
+  debug_log:
+    name: "Debug log"
+    regex: "(print|println)"
+    message: "Donot use `print` in code, please use Console.log(`msg`) instead."
+    severity: warning
+  not_use_uiwebview:
+    name: "Not Use UIWebView"
+    regex: "(UIWebView)"
+    message: "No longer supported; please adopt WKWebView."
+    severity: error
